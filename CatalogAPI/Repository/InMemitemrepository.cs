@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace CatalogApi.Repository
 {
-    public class InMemitemrepository
+    public class InMemitemrepository : IInMemitemrepository
     {
         private readonly List<Item> items = new()
         {
@@ -22,6 +22,23 @@ namespace CatalogApi.Repository
         public Item GetItem(Guid Id)
         {
             return items.Where(item => item.Id == Id).SingleOrDefault();
+        }
+
+        public void CreateItem(Item item)
+        {
+            items.Add(item);
+        }
+
+        public void UpdateItem(Item item)
+        {
+            var index = items.FindIndex(exixtingItem => exixtingItem.Id == item.Id);
+            items[index] = item;
+        }
+
+        public void Delete(Guid id)
+        {
+            var index = items.FindIndex(exixtingItem => exixtingItem.Id == id);
+            items.RemoveAt(index);
         }
     }
 }
